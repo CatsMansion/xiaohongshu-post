@@ -1,0 +1,47 @@
+# xiaohongshu-post
+
+An agent skill for publishing image-and-text notes to Xiaohongshu (小红书 / RED) from a
+logged-in Chrome profile via Playwright over CDP.
+
+For AI agents: load this when the user asks to post/publish a note to 小红书 / RED, or wants a
+public share link for a note they published.
+
+## What it gives you
+- A browser bootstrap that keeps the **login** across agent turn boundaries. The browser
+  *process* is reaped no matter how you start it (measured twice) — what persists is the
+  **profile directory** (`$PROFILE_DIR/Default/Cookies`, holds `id_token`). Re-launch Chrome
+  against the same profile dir each turn and it comes back logged in. Never use a fresh
+  profile per turn.
+- `scripts/publish_note.js`: image upload, title/body filling, insertion of REAL topic tags via
+  the Tiptap suggestion dropdown, draft screenshots. Does not publish unless `--publish` is passed.
+- `scripts/verify_note.js`: extracts note id / `xsec_token` / short link and proves public
+  visibility from a fresh logged-out context (curl cannot — the page is client-rendered).
+- `references/selectors.md`: every selector, API field, and pitfall with its root cause.
+- `references/copy-guide.md`: title/body/image specs (title ≤20 chars, body ≤1000, cover 3:4).
+
+## When to activate (triggers)
+- "发小红书" / "上传小红书" / "帮我发个笔记" / post to Xiaohongshu / RED.
+- Automating a publish where the account is already logged in.
+- Recovering a working public link for a published note.
+Do NOT use for: video notes, live, comment automation, multi-account matrix publishing.
+
+## Files (read these)
+- SKILL.md — the workflow, the three mandatory pre-checks, and the pitfall quick-reference.
+- references/selectors.md — selectors, API endpoints, field meanings, verified platform limits.
+- references/copy-guide.md — copy template + image spec + cover layout.
+- scripts/bootstrap_browser.sh — start Chrome with CDP + attach playwright-cli.
+- scripts/publish_note.js — fill the draft (add `--publish` to click 发布).
+- scripts/verify_note.js — extract links + verify public visibility.
+
+## Run it
+    bash scripts/bootstrap_browser.sh .tmp/xhs-cdp 9222
+    node scripts/publish_note.js --title "..." --body-file body.txt --images a.png,b.png --topics "X,Y"
+    node scripts/verify_note.js --expect "标题前几个字"
+Exit 0 = ok, 1 = error, 2 = bad input, 3 = published but NOT publicly visible.
+
+## Install
+    npx skills add CatsMansion/xiaohongshu-post
+Repo: https://github.com/CatsMansion/xiaohongshu-post
+
+## License
+MIT.

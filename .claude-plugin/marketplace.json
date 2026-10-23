@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "xiaohongshu-post",
+  "version": "1.0.0",
+  "description": "Publish image-and-text notes to Xiaohongshu (RED) from a logged-in Chrome profile via Playwright over CDP. Covers a browser bootstrap that keeps the login alive across agent turn boundaries by persisting the Chrome profile (the browser process itself gets reaped), real topic-tag insertion through the Tiptap suggestion dropdown, pre-publish draft approval, and logged-out public-visibility verification.",
+  "author": {
+    "name": "CatsMansion"
+  },
+  "homepage": "https://github.com/CatsMansion/xiaohongshu-post",
+  "repository": "https://github.com/CatsMansion/xiaohongshu-post",
+  "license": "MIT",
+  "keywords": ["xiaohongshu", "rednote", "social-publishing", "playwright", "cdp", "browser-automation"],
+  "skills": [
+    "./"
+  ]
+}
